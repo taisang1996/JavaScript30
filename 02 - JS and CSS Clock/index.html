@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+
+  <div class="clock">
+    <div class="clock-face">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>5</span>
+      <span>6</span>
+      <span>7</span>
+      <span>8</span>
+      <span>9</span>
+      <span>10</span>
+      <span>11</span>
+      <span>12</span>
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+
+  <style>
+    html {
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-height: 100vh;
+      background-image: linear-gradient(0deg, #8baaaa 0%, #ae8b9c 100%);
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1),
+      0 0 10px rgba(0, 0, 0, 0.2);
+      background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-0px);
+      /* account for the height of the clock hands */
+    }
+
+    .clock-face span {
+      position: absolute;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+    }
+    /*.second-hand {
+      transform: rotate(calc(90deg + 360deg)) !important;
+    }*/
+
+    .clock-face span:nth-child(1) {
+      top: 5%;
+      right: 25%;
+      transform: translateX(50%)
+    }
+
+    .clock-face span:nth-child(2) {
+      top: 25%;
+      right: 5%;
+      transform: translateY(-50%)
+    }
+
+    .clock-face span:nth-child(4) {
+      bottom: 25%;
+      right: 5%;
+      transform: translateY(50%)
+    }
+
+    .clock-face span:nth-child(5) {
+      bottom: 5%;
+      right: 25%;
+      transform: translateX(50%)
+    }
+
+    .clock-face span:nth-child(7) {
+      bottom: 5%;
+      left: 25%;
+      transform: translateX(-50%)
+    }
+
+    .clock-face span:nth-child(8) {
+      bottom: 25%;
+      left: 5%;
+      transform: translateY(50%)
+    }
+
+    .clock-face span:nth-child(10) {
+      top: 25%;
+      left: 5%;
+      transform: translateY(-50%)
+    }
+
+    .clock-face span:nth-child(11) {
+      top: 5%;
+      left: 25%;
+      transform: translateX(-50%)
+    }
+
+    .clock-face span:nth-child(3) {
+      top: 50%;
+      right: 0%;
+      transform: translateY(-50%)
+    }
+
+    .clock-face span:nth-child(6) {
+      bottom: 0;
+      transform: translateX(-50%)
+    }
+
+    .clock-face span:nth-child(9) {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%)
+    }
+
+    .clock-face span:nth-child(12) {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%)
+    }
+
+    .hand {
+      position: relative;
+      width: 50%;
+      height: 6px;
+      border-radius: 10px;
+
+      background: black;
+      position: absolute;
+      top: 50%;
+
+      transform-origin: 100% 50%;
+      transform: rotate(90deg);
+    }
+
+    .second-hand {
+      background: red;
+    }
+
+    .second-hand:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0%;
+      transform: translate(50%, -50%);
+
+      width: 15px;
+      height: 15px;
+      background: red;
+      border-radius: 50%;
+    }
+  </style>
+
+  <script>
+    let secondHand = document.querySelector('.second-hand')
+    let minuteHand = document.querySelector('.min-hand')
+    let hourHand = document.querySelector('.hour-hand')
+
+    function setHand(hand, degree) {
+      hand.style.transform = `rotate(${degree}deg)`
+    }
+
+    function changeBackground(degree) {
+      let cssBg = `linear-gradient(${degree}deg, #8baaaa 0%, #ae8b9c 100%)`
+      let cssTransBg = 'background-image 0.5s linear'
+
+      document.body.style.transition = cssTransBg
+      document.querySelector('.clock').style = cssTransBg
+
+      document.body.style.backgroundImage = cssBg
+      document.querySelector('.clock').style.backgroundImage = cssBg
+    }
+
+    function tick() {
+      let now = new Date()
+
+      setHand(secondHand, now.getSeconds() / 60 * 360 + 90)
+      setHand(minuteHand, now.getMinutes() / 60 * 360 + 90)
+      setHand(hourHand, now.getHours() / 12 * 360 + 90)
+
+      changeBackground(now.getSeconds() / 60 * 360)
+    }
+
+    setInterval(tick, 1000)
+  </script>
+</body>
+
+</html>
