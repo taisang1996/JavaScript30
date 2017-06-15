@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <title>LocalStorage</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .action {
+      margin-top: 10px;
+    }
+    .action button {
+      padding: 10px 5px;
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
   <!--
@@ -23,12 +32,19 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+
+    <div class="action">
+      <button class="checkall" onclick="checkAll()">Check all</button>
+      <button class="uncheckall" onclick="uncheckAll()">Uncheck all</button>
+      <button class="deleteall" onclick="deleteAll()">Delete all</button>
+    </div>
+    
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = JSON.parse(localStorage.getItem('items')) || [];
+  let items = JSON.parse(localStorage.getItem('items')) || [];
 
   function addItem(e) {
     e.preventDefault()
@@ -64,6 +80,34 @@
 
     items[index].done = !items[index].done
     localStorage.setItem('items', JSON.stringify(items))
+    displayPlates()
+  }
+
+  function checkAll(e) {
+    itemsList.querySelectorAll('li input[type=checkbox]')
+    .forEach(checkbox => {
+      const index = checkbox.dataset.index
+
+      items[index].done = true
+      localStorage.setItem('items', JSON.stringify(items))
+      displayPlates()
+    })
+  }
+
+  function uncheckAll(e) {
+    itemsList.querySelectorAll('li input[type=checkbox]')
+    .forEach(checkbox => {
+      const index = checkbox.dataset.index
+
+      items[index].done = false
+      localStorage.setItem('items', JSON.stringify(items))
+      displayPlates()
+    })
+  }
+
+  function deleteAll(e) {
+    items = []
+    localStorage.removeItem('items')
     displayPlates()
   }
 
